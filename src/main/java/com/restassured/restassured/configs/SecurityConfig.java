@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable() )
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/api/v2/restassured").hasRole("client1_ADMIN")
+                                .requestMatchers("/api/v2/posts").hasRole("client1_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
