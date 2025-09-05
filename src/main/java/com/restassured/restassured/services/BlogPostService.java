@@ -21,10 +21,6 @@ public class BlogPostService implements BlogPostServiceInterface {
 
         List<BlogPost> allCurrentBlogPosts = blogPostRepository.findAll();
 
-        if (allCurrentBlogPosts.isEmpty()){
-            throw new ResourceNotFoundException("allCurrentBlogPosts", "blogPostRepository.findAll()");
-        }
-
         return allCurrentBlogPosts;
     }
 

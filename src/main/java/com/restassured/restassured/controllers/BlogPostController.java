@@ -1,21 +1,32 @@
 package com.restassured.restassured.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.restassured.restassured.entities.BlogPost;
+import com.restassured.restassured.services.BlogPostService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v2")
 public class BlogPostController {
 
+    private final BlogPostService blogPostService;
+
+    public BlogPostController(BlogPostService blogPostService){
+        this.blogPostService = blogPostService;
+    }
+
     @GetMapping("/posts")
-    public String getAllPosts(){
-        return "Test String For Admins";
+    public List<BlogPost> getAllPosts(){
+        return blogPostService.getAllBlogPosts();
     }
 
     @GetMapping("/post/{id}")
-    public String getPostById(){
-        return "Test String single post by id";
+    public BlogPost getPostById(@PathVariable Long id){
+        return blogPostService.getBlogPostById(id);
     }
+
+
+
 
 }
