@@ -21,13 +21,17 @@ public class BlogPostService implements BlogPostServiceInterface {
 
         List<BlogPost> allCurrentBlogPosts = blogPostRepository.findAll();
 
+        if (allCurrentBlogPosts.isEmpty()){
+            throw new ResourceNotFoundException("Blog Posts", "blogPostRepository.findAll()");
+        }
+
         return allCurrentBlogPosts;
     }
 
     @Override
     public BlogPost getBlogPostById(Long id) {
         return blogPostRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("BlogPost id", "blogPostRepository.findById(" + id +")"));
+                .orElseThrow(() -> new ResourceNotFoundException("BlogPost", "blogPostRepository.findById(" + id +")"));
     }
 
     @Override
