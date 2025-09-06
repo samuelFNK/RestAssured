@@ -20,6 +20,9 @@ public class BlogPost {
     @NonNull
     private String body;
 
+    @NonNull
+    private String callerSUB;
+
 
     public BlogPost(){}
 
@@ -49,4 +52,11 @@ public class BlogPost {
         this.title = title;
     }
 
+    public String getCallerSUB() {
+        return callerSUB;
+    }
+
+    public void setCallerSUB(@NonNull String callerSUB) {
+        this.callerSUB = callerSUB;
+    }
 }

@@ -10,10 +10,11 @@ public interface BlogPostServiceInterface {
 
     BlogPost getBlogPostById(Long id);
 
-    BlogPost editBlogPostById(Long id, BlogPost blogPost);
+    BlogPost editBlogPostById(String callerSUB, BlogPost blogPost);
 
-    BlogPost addBlogPost(BlogPost blogPost);
+    BlogPost addBlogPost(String callerSUB, BlogPost blogPost);
 
-    void deleteBlogPostById(Long id);
+    void deleteBlogPostById(String callerSUB, List callerRoles, Long id);
 
+    Long getBlogPostCount();
 }

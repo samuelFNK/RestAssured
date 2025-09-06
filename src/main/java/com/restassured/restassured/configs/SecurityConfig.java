@@ -22,8 +22,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable() )
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/api/v2/posts").hasAnyRole("client1_ADMIN", "client1_USER")
-                                .requestMatchers("/api/v2/post/**").hasRole("client1_ADMIN")
+                                .requestMatchers("/api/v2/posts").authenticated()
+                                .requestMatchers("/api/v2/post/**").authenticated()
+                                .requestMatchers("/api/v2/count").hasRole("client1_ADMIN")
+                                .requestMatchers("api/v2/newpost").hasRole("client1_USER")
+                                .requestMatchers("/api/v2/updatepost").hasRole("client1_USER")
+                                .requestMatchers("/api/v2/deletepost/**").hasAnyRole("client1_USER", "client1_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

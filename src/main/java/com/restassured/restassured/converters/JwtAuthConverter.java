@@ -25,8 +25,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
     @Value("${jwt.auth.converter.resource-id.name}")
     private String resourceIdName;
-    @Value("${jwt.auth.converter.principle-attribute}")
-    private String principleAttribute;
+    @Value("${jwt.auth.converter.principal-attribute}")
+    private String principalAttribute;
 
     @Override
     public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
@@ -62,8 +62,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     private String getPrincipleClaimName(Jwt jwt) {
 
         String claimName = JwtClaimNames.SUB;
-        if (principleAttribute != null && !principleAttribute.isEmpty()) {
-            claimName = principleAttribute;
+        if (principalAttribute != null && !principalAttribute.isEmpty()) {
+            claimName = principalAttribute;
         }
         return jwt.getClaim(claimName);
     }

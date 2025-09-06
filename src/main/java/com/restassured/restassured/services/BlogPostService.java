@@ -1,6 +1,7 @@
 package com.restassured.restassured.services;
 
 import com.restassured.restassured.entities.BlogPost;
+import com.restassured.restassured.exceptions.PostOwnershipViolationException;
 import com.restassured.restassured.exceptions.ResourceNotFoundException;
 import com.restassured.restassured.repositories.BlogPostRepository;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,10 @@ public class BlogPostService implements BlogPostServiceInterface {
     }
 
     @Override
-    public BlogPost editBlogPostById(Long id, BlogPost blogPost) {
+    public BlogPost editBlogPostById(String callerSUB, BlogPost blogPost) {
 
-        BlogPost selectedBlogPost = blogPostRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("BlogPost id", "blogPostRepository.findById(" + id + ")"));
+        BlogPost selectedBlogPost = blogPostRepository.findById(blogPost.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("BlogPost id", "blogPostRepository.findById(" + blogPost.getId() + ")"));
 
         if (blogPost.getTitle() != null && blogPost.getTitle() != selectedBlogPost.getTitle()){
             selectedBlogPost.setTitle(blogPost.getTitle());
@@ -51,18 +52,43 @@ public class BlogPostService implements BlogPostServiceInterface {
     }
 
     @Override
-    public BlogPost addBlogPost(BlogPost blogPost) {
+    public BlogPost addBlogPost(String callerSUB, BlogPost blogPost) {
+
+        if (blogPost.getTitle() == null || blogPost.getTitle().isEmpty()){
+            throw new ResourceNotFoundException("title", "Entered BlogPost");
+        }
+        if (blogPost.getBody() == null || blogPost.getBody().isEmpty()){
+            throw new ResourceNotFoundException("body", "Entered BlogPost");
+        }
+
+        blogPost.setCallerSUB(callerSUB);
 
         return blogPostRepository.save(blogPost);
     }
 
     @Override
-    public void deleteBlogPostById(Long id) {
+    public void deleteBlogPostById(String callerSUB, List callerRoles, Long id) {
 
-        if (!blogPostRepository.existsById(id)){
-            throw new ResourceNotFoundException("BlogPost", "blogPostRepository.existsById(" + id +")");
+        BlogPost selectedBlogPost = blogPostRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("blog post id", "blogPostRepository.findById(" + id +")"));
+
+        if (callerRoles.contains("client1_ADMIN")){
+            blogPostRepository.deleteById(id);
+            return;
+        }
+       System.out.println("DONT WANNA SEEE");
+
+        if (selectedBlogPost.getCallerSUB() != callerSUB){
+            throw new PostOwnershipViolationException(callerSUB, selectedBlogPost.getId());
         }
 
         blogPostRepository.deleteById(id);
+    }
+
+    @Override
+    public Long getBlogPostCount(){
+
+        return blogPostRepository.count();
+
     }
 }
