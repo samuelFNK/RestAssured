@@ -7,7 +7,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +51,6 @@ public class BlogPostController {
         Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
         Map<String, Object> clientRoles = (Map<String, Object>) resourceAccess.get("client1");
         List<String> roles = (List<String>) clientRoles.get("roles");
-
 
         blogPostService.deleteBlogPostById(jwt.getSubject(), roles, id);
     }

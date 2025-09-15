@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.springframework.lang.NonNull;
 
-
 @Entity
 public class BlogPost {
 
@@ -23,9 +22,7 @@ public class BlogPost {
     @NonNull
     private String callerSUB;
 
-
     public BlogPost(){}
-
 
     public Long getId() {
         return id;
@@ -34,7 +31,6 @@ public class BlogPost {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getBody() {
         return body;

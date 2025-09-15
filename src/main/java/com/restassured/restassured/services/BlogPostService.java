@@ -63,7 +63,7 @@ public class BlogPostService implements BlogPostServiceInterface {
 
         blogPost.setCallerSUB(callerSUB);
 
-        System.out.println("Assignment request for printed caller SUB: " + callerSUB);
+        System.out.println("Assignment request for printed: caller SUB = " + callerSUB);
 
         return blogPostRepository.save(blogPost);
     }
@@ -91,6 +91,5 @@ public class BlogPostService implements BlogPostServiceInterface {
     public Long getBlogPostCount(){
 
         return blogPostRepository.count();
-
     }
 }
