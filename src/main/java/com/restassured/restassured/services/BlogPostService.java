@@ -41,6 +41,10 @@ public class BlogPostService implements BlogPostServiceInterface {
         BlogPost selectedBlogPost = blogPostRepository.findById(blogPost.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("BlogPost id", "blogPostRepository.findById(" + blogPost.getId() + ")"));
 
+        if (!selectedBlogPost.getCallerSUB().equals(callerSUB)){
+            throw new PostOwnershipViolationException(callerSUB, selectedBlogPost.getId());
+        }
+
         if (blogPost.getTitle() != null && blogPost.getTitle() != selectedBlogPost.getTitle()){
             selectedBlogPost.setTitle(blogPost.getTitle());
         }
@@ -78,9 +82,8 @@ public class BlogPostService implements BlogPostServiceInterface {
             blogPostRepository.deleteById(id);
             return;
         }
-       System.out.println("DONT WANNA SEEE");
 
-        if (selectedBlogPost.getCallerSUB() != callerSUB){
+        if (!selectedBlogPost.getCallerSUB().equals(callerSUB)){
             throw new PostOwnershipViolationException(callerSUB, selectedBlogPost.getId());
         }
 
